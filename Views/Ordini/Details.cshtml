@@ -1,0 +1,28 @@
+@model GestioneOrdini.Models.Ordine
+
+@{
+    ViewData["Title"] = "Dettagli Ordine";
+}
+
+<h1>Dettagli Ordine</h1>
+
+<div>
+    <h4>Ordine</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">ID</dt>
+        <dd class="col-sm-10">@Model.Id</dd>
+        <dt class="col-sm-2">Data Ordine</dt>
+        <dd class="col-sm-10">@Model.DataOrdine.ToShortDateString()</dd>
+        <dt class="col-sm-2">Totale</dt>
+        <dd class="col-sm-10">@Model.Totale.ToString("C")</dd>
+        <dt class="col-sm-2">Stato</dt>
+        <dd class="col-sm-10">@Model.Stato</dd>
+        <dt class="col-sm-2">Cliente</dt>
+        <dd class="col-sm-10">@Model.Cliente.Nome @Model.Cliente.Cognome</dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Modifica</a> |
+    <a asp-action="Index">Torna alla Lista</a>
+</div>

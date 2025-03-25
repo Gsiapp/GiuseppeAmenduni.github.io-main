@@ -1,0 +1,37 @@
+@model GestioneOrdini.Models.Cliente
+
+@{
+    ViewData["Title"] = "Elimina Cliente";
+}
+
+<div class="container mt-4">
+    <h1>@ViewData["Title"]</h1>
+    <h3>Sei sicuro di voler eliminare questo cliente?</h3>
+    
+    <div class="card mt-3">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Nome</dt>
+                <dd class="col-sm-9">@Model.Nome</dd>
+
+                <dt class="col-sm-3">Cognome</dt>
+                <dd class="col-sm-9">@Model.Cognome</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3">Telefono</dt>
+                <dd class="col-sm-9">@Model.Telefono</dd>
+
+                <dt class="col-sm-3">Indirizzo</dt>
+                <dd class="col-sm-9">@Model.Indirizzo</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" class="mt-3">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Elimina</button>
+        <a asp-action="Index" class="btn btn-secondary">Annulla</a>
+    </form>
+</div>

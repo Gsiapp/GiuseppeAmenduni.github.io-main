@@ -1,0 +1,14 @@
+@model GestioneOrdini.Models.ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Errore.</h1>
+<h2 class="text-danger">Si è verificato un errore durante l'elaborazione della richiesta.</h2>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}

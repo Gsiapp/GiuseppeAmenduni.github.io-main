@@ -1,0 +1,11 @@
+using Microsoft.AspNetCore.Identity;
+
+namespace GestioneOrdini.Models
+{
+    public class ApplicationUser : IdentityUser
+    {
+        // Aggiungi proprietà personalizzate qui (opzionale)
+        public string Nome { get; set; }
+        public string Cognome { get; set; }
+    }
+}

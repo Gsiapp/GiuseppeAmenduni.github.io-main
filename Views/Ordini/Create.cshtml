@@ -1,0 +1,45 @@
+@model GestioneOrdini.Models.Ordine
+
+@{
+    ViewData["Title"] = "Crea Ordine";
+}
+
+<h1>Crea Ordine</h1>
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="DataOrdine" class="control-label"></label>
+        <input asp-for="DataOrdine" class="form-control" type="date" /> 
+        <span asp-validation-for="DataOrdine" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Totale" class="control-label"></label>
+        <input asp-for="Totale" class="form-control" type="number" step="0.01" /> 
+        <span asp-validation-for="Totale" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Stato" class="control-label"></label>
+        <select asp-for="Stato" class="form-control">
+            <option value="">Seleziona uno stato</option>
+            <option value="In attesa">In attesa</option>
+            <option value="In elaborazione">In elaborazione</option>
+            <option value="Completato">Completato</option>
+            <option value="Annullato">Annullato</option>
+        </select>
+        <span asp-validation-for="Stato" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ClienteId" class="control-label"></label>
+        <select asp-for="ClienteId" class="form-control" asp-items="ViewBag.Clienti">
+            <option value="">Seleziona un cliente</option> 
+        </select>
+        <span asp-validation-for="ClienteId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Crea" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Torna alla Lista</a>
+</div>

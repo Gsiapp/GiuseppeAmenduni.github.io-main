@@ -1,0 +1,99 @@
+@model IEnumerable<GestioneOrdini.Models.Ordine>
+@{
+    ViewBag.Title = "Lista Ordini";
+}
+
+@section Styles {
+    <style>
+        .table-container {
+            height: 350px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            background-color: #ffffff;
+            z-index: 10;
+            border-bottom: 2px solid #dee2e6;
+        }
+    </style>
+}
+
+<h2 class="mb-4">Elenco Ordini</h2>
+
+<div class="table-container"> 
+    <table class="table table-bordered table-striped">
+        <thead class="sticky-header">
+            <tr>
+                <th>ID</th>
+                <th>
+                    <a asp-action="Index" 
+                       asp-route-sortOrder="@ViewBag.DateSortParam"
+                       asp-route-searchString="@ViewBag.SearchString"
+                       class="text-decoration-none">
+                        Data Ordine
+                    </a>
+                </th>
+                <th>
+                    <a asp-action="Index" 
+                       asp-route-sortOrder="@ViewBag.TotalSortParam"
+                       asp-route-searchString="@ViewBag.SearchString"
+                       class="text-decoration-none">
+                        Totale
+                    </a>
+                </th>
+                <th>
+                    <a asp-action="Index" 
+                       asp-route-sortOrder="@ViewBag.StatoSortParam"
+                       asp-route-searchString="@ViewBag.SearchString"
+                       class="text-decoration-none">
+                        Stato
+                    </a>
+                </th>
+                <th>Cliente</th>
+                <th>Azioni</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach(var ordine in Model)
+        {
+            <tr>
+                <td>@ordine.Id</td>
+                <td>@ordine.DataOrdine.ToShortDateString()</td>
+                <td>@ordine.Totale.ToString("C")</td>
+                <td>@ordine.Stato</td>
+                <td>@ordine.Cliente.Nome @ordine.Cliente.Cognome</td>
+                <td>
+                    <a href="@Url.Action("Details", "Ordini", new { id = ordine.Id })" class="btn btn-sm btn-info">Dettagli</a>
+                    <a href="@Url.Action("Edit", "Ordini", new { id = ordine.Id })" class="btn btn-sm btn-warning">Modifica</a>
+                    <a href="@Url.Action("Delete", "Ordini", new { id = ordine.Id })" class="btn btn-sm btn-danger">Elimina</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<div class="pagination">
+    @if (ViewBag.CurrentPage > 1)
+    {
+        <a asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)" asp-route-searchString="@ViewBag.SearchString" asp-route-sortOrder="@ViewBag.CurrentSort" class="btn btn-primary">Precedente</a>
+    }
+    else
+    {
+        <button class="btn btn-secondary" disabled>Precedente</button>
+    }
+
+    <span class="mx-2">Pagina @ViewBag.CurrentPage di @ViewBag.TotalPages</span>
+
+    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+    {
+        <a asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)" asp-route-searchString="@ViewBag.SearchString" asp-route-sortOrder="@ViewBag.CurrentSort" class="btn btn-primary">Successiva</a>
+    }
+    else
+    {
+        <button class="btn btn-secondary" disabled>Successiva</button>
+    }
+</div>

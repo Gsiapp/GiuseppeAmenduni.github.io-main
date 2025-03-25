@@ -1,0 +1,59 @@
+@model GestioneOrdini.Models.Cliente
+
+@{
+    ViewData["Title"] = "Modifica Cliente";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Modifica Cliente</h2>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="Nome" class="form-label fw-bold"></label>
+                            <input asp-for="Nome" class="form-control" />
+                            <span asp-validation-for="Nome" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="Cognome" class="form-label fw-bold"></label>
+                            <input asp-for="Cognome" class="form-control" />
+                            <span asp-validation-for="Cognome" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="Email" class="form-label fw-bold"></label>
+                            <input asp-for="Email" type="email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="Telefono" class="form-label fw-bold"></label>
+                            <input asp-for="Telefono" class="form-control" />
+                            <span asp-validation-for="Telefono" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Indirizzo" class="form-label fw-bold"></label>
+                    <input asp-for="Indirizzo" class="form-control" readonly /> 
+                    <span asp-validation-for="Indirizzo" class="text-danger"></span>
+                </div>
+                <div class="d-flex justify-content-between mt-3">
+                    <a asp-action="Index" class="btn btn-outline-secondary">&#8592; Annulla</a>
+                    <button type="submit" class="btn btn-success">&#10004; Salva</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

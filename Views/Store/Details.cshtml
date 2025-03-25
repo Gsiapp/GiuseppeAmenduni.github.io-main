@@ -1,0 +1,32 @@
+@model Prodotto
+
+@{
+    ViewData["Title"] = "Dettagli Prodotto";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="@Model.ImmagineUrl" class="img-fluid rounded-3 shadow" alt="@Model.Nome">
+        </div>
+        <div class="col-md-6">
+            <h1 class="display-5">@Model.Nome</h1>
+            <p class="lead">@Model.Descrizione</p>
+            <hr>
+            
+            <div class="mb-4">
+                <h4 class="text-success">@Model.Prezzo.ToString("C")</h4>
+                <p class="text-muted">Disponibilità: @Model.QuantitaDisponibile pezzi</p>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button class="btn btn-warning btn-lg">
+                    <i class="fas fa-cart-plus"></i> Aggiungi al Carrello
+                </button>
+                <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Torna allo Store
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
