@@ -4,6 +4,7 @@ using GestioneOrdini.Data;
 using GestioneOrdini.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GestioneOrdini.Controllers
 {
@@ -17,6 +18,7 @@ namespace GestioneOrdini.Controllers
         }
 
         // GET: Home/Index
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var ordini = await _context.Ordini

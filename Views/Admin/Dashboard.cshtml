@@ -1,0 +1,70 @@
+@using Microsoft.AspNetCore.Http
+
+@{
+    ViewData["Title"] = "Dashboard Amministratore";
+    Layout = "_Layout"; // Assicurati di avere un layout condiviso
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 class="display-4">Benvenuto nella Dashboard Amministrativa</h1>
+            <p class="lead">Ruolo: <strong>@Context.Session.GetString("UserRole")</strong></p>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <!-- Card Ordini -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-box-open fa-2x"></i></h5>
+                    <h4>Gestione Ordini</h4>
+                    <a href="@Url.Action("Index", "Ordini")" class="btn btn-primary mt-3">Vai agli Ordini</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Clienti -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-users fa-2x"></i></h5>
+                    <h4>Gestione Clienti</h4>
+                    <a href="@Url.Action("Index", "Clienti")" class="btn btn-primary mt-3">Vai ai Clienti</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Magazzino -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-warehouse fa-2x"></i></h5>
+                    <h4>Gestione Store</h4>
+                    <a href="@Url.Action("Index", "Store")" class="btn btn-primary mt-3">Vai allo Store</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12 text-center">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> Ultimo accesso: @DateTime.Now.ToString("dd/MM/yyyy HH:mm")
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Aggiungi Font Awesome per le icone -->
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+}
+
+@section Scripts {
+    <script>
+        // Script base per la dashboard
+        console.log("Dashboard admin caricata correttamente");
+    </script>
+}
