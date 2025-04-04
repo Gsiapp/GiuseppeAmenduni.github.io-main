@@ -1,0 +1,145 @@
+@model GestioneOrdini.Models.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Il Mio Profilo";
+}
+
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            <i class="fas fa-user-circle fa-5x"></i>
+        </div>
+        <div class="profile-title">
+            <h1>Il Mio Profilo</h1>
+            <p>Gestisci le tue informazioni personali</p>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Informazioni Personali -->
+        <div class="col-md-8">
+            <div class="card profile-card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user me-2"></i>Informazioni Personali
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Profile" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Nome" class="form-label"></label>
+                                <input asp-for="Nome" class="form-control" />
+                                <span asp-validation-for="Nome" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Cognome" class="form-label"></label>
+                                <input asp-for="Cognome" class="form-control" />
+                                <span asp-validation-for="Cognome" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Telefono" class="form-label"></label>
+                            <input asp-for="Telefono" class="form-control" />
+                            <span asp-validation-for="Telefono" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Indirizzo" class="form-label"></label>
+                            <input asp-for="Indirizzo" class="form-control" />
+                            <span asp-validation-for="Indirizzo" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Citta" class="form-label"></label>
+                                <input asp-for="Citta" class="form-control" />
+                                <span asp-validation-for="Citta" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="Provincia" class="form-label"></label>
+                                <input asp-for="Provincia" class="form-control" />
+                                <span asp-validation-for="Provincia" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label asp-for="CAP" class="form-label"></label>
+                                <input asp-for="CAP" class="form-control" />
+                                <span asp-validation-for="CAP" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Salva Modifiche
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistiche Account -->
+        <div class="col-md-4">
+            <div class="card profile-card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Statistiche Account
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-calendar-alt text-primary"></i>
+                            <div class="stat-info">
+                                <span class="stat-label">Membro dal</span>
+                                <span class="stat-value">@Model.DataRegistrazione.ToString("dd/MM/yyyy")</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-clock text-success"></i>
+                            <div class="stat-info">
+                                <span class="stat-label">Ultimo accesso</span>
+                                <span class="stat-value">@(Model.UltimoAccesso?.ToString("dd/MM/yyyy HH:mm") ?? "Mai")</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Azioni Rapide -->
+            <div class="card profile-card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-cog me-2"></i>Azioni Rapide
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <i class="fas fa-key me-2"></i>Cambia Password
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <i class="fas fa-bell me-2"></i>Preferenze Notifiche
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action text-danger">
+                            <i class="fas fa-trash me-2"></i>Elimina Account
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

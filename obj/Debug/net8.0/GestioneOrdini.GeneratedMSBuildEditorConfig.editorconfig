@@ -9,103 +9,127 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = GestioneOrdini
 build_property.RootNamespace = GestioneOrdini
-build_property.ProjectDir = C:\Users\A564apulia\Desktop\GiuseppeAmenduni.github.io-main\
+build_property.ProjectDir = C:\Users\A564apulia\Desktop\GiuseppeAmenduni.github.io-main - Copia\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\A564apulia\Desktop\GiuseppeAmenduni.github.io-main
+build_property.MSBuildProjectDirectory = C:\Users\A564apulia\Desktop\GiuseppeAmenduni.github.io-main - Copia
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Account/Login.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Pages/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Pages/ModificaProfilo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTW9kaWZpY2FQcm9maWxvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Admin/Clients.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Account/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxQcm9maWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Admin/Clients.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ2xpZW50cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Admin/Dashboard.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Admin/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Admin/Orders.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Admin/Orders.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cT3JkZXJzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Admin/Store.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Admin/Store.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU3RvcmUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Clienti/Create.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Carrello/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FycmVsbG9cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Clienti/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50aVxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Clienti/Delete.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Clienti/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50aVxEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Clienti/Edit.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Clienti/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50aVxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Clienti/Index.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Clienti/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50aVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Home/Error.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Home/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxFcnJvci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Home/Index.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Home/Privacy.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Ordini/Create.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Ordini/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkaW5pXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Ordini/Delete.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Ordini/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkaW5pXERlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Ordini/Details.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Ordini/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkaW5pXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Ordini/Edit.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Ordini/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkaW5pXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Ordini/Index.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Ordini/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkaW5pXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Shared/Error.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Store/Details.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Shared/_LoginLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpbkxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Store/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvcmVcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Store/Index.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Store/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvcmVcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/_ViewImports.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/_ViewStart.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main/Views/Shared/_Layout.cshtml]
+[C:/Users/A564apulia/Desktop/GiuseppeAmenduni.github.io-main - Copia/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-vj7c7rarj5

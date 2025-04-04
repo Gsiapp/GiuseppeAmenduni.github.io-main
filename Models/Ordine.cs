@@ -8,7 +8,7 @@ namespace GestioneOrdini.Models
         public int Id { get; set; }
 
         [Required]
-        public DateTime DataOrdine { get; set; } = DateTime.UtcNow; // Inizializza con la data attuale
+        public DateTime DataOrdine { get; set; } = DateTime.UtcNow; 
 
         [Required]
         [Range(0, double.MaxValue, ErrorMessage = "Il totale non può essere negativo.")]

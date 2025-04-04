@@ -5,7 +5,8 @@ namespace GestioneOrdini.Data
 {
     public class AppDbContext : DbContext
     {
-        // Costruttore OBBLIGATORIO per la dependency injection
+        public DbSet<Carrello> Carrelli { get; set; }
+        public DbSet<CarrelloItem> CarrelloItems { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
@@ -24,7 +25,8 @@ namespace GestioneOrdini.Data
                 .HasMany(c => c.Ordini)
                 .WithOne(o => o.Cliente)
                 .HasForeignKey(o => o.ClienteId)
-                .OnDelete(DeleteBehavior.Cascade); // Opzionale: cancella gli ordini se viene eliminato un cliente
+                .OnDelete(DeleteBehavior.Cascade); 
         }
+        
     }
 }

@@ -1,0 +1,52 @@
+@page
+@model GestioneOrdini.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Accedi";
+}
+
+<div class="login-page">
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Benvenuto</h1>
+            <p>Accedi al tuo account per continuare</p>
+        </div>
+
+        <form method="post" class="login-form">
+            @if (!ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <div>
+                        <strong>Errore di accesso</strong>
+                        <p>Credenziali non valide. Riprova.</p>
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" asp-for="Username" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" asp-for="Password" class="form-control" required>
+            </div>
+
+            <input type="hidden" asp-for="ReturnUrl" />
+
+            <button type="submit" class="btn btn-login">
+                <i class="fas fa-sign-in-alt me-2"></i>
+                Accedi
+            </button>
+        </form>
+
+        <div class="login-footer">
+            <p>Non hai un account?</p>
+            <a asp-page="/Account/Register" asp-route-returnUrl="@Model.ReturnUrl">
+                <i class="fas fa-user-plus me-1"></i>
+                Registrati
+            </a>
+        </div>
+    </div>
+</div> 

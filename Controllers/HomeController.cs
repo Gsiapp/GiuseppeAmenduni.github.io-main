@@ -21,10 +21,49 @@ namespace GestioneOrdini.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-            var ordini = await _context.Ordini
-                .Include(o => o.Cliente) // Include i dettagli del cliente associato
+            // Statistiche
+            ViewBag.TotaleOrdini = await _context.Ordini.CountAsync();
+            ViewBag.TotaleClienti = await _context.Clienti.CountAsync();
+            ViewBag.TotaleProdotti = await _context.Prodotti.CountAsync();
+            ViewBag.FatturatoTotale = await _context.Ordini.SumAsync(o => o.Totale);
+
+            // Ultimi ordini
+            var ultimiOrdini = await _context.Ordini
+                .Include(o => o.Cliente)
+                .OrderByDescending(o => o.DataOrdine)
+                .Take(5)
+                .Select(o => new
+                {
+                    o.Id,
+                    Cliente = o.Cliente.Nome + " " + o.Cliente.Cognome,
+                    Data = o.DataOrdine.ToString("dd/MM/yyyy"),
+                    o.Totale,
+                    StatoEnum = o.Stato,
+                    Stato = o.Stato.ToString()
+                })
                 .ToListAsync();
-            return View(ordini);
+
+            
+            var ordiniConColore = ultimiOrdini.Select(o => new
+            {
+                o.Id,
+                o.Cliente,
+                o.Data,
+                o.Totale,
+                o.Stato,
+                StatoColore = o.StatoEnum switch
+                {
+                    Ordine.StatoOrdine.InElaborazione => "warning",
+                    Ordine.StatoOrdine.Spedito => "info",
+                    Ordine.StatoOrdine.Consegnato => "success",
+                    Ordine.StatoOrdine.Annullato => "danger",
+                    _ => "secondary"
+                }
+            }).ToList();
+
+            ViewBag.UltimiOrdini = ordiniConColore;
+
+            return View();
         }
 
         // GET: Home/OrdineDetails/5

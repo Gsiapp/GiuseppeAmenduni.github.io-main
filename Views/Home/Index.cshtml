@@ -1,86 +1,232 @@
-﻿@{
+﻿@using GestioneOrdini.Models
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand" href="#">
-            <i class="fas fa-store me-2 text-primary"></i>Ecommerce Admin
+            <i class="fas fa-store me-2"></i>Ecommerce Admin
         </a>
         
         
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menu -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="@Url.Action("Index", "Home")">
+                        <i class="fas fa-home me-1"></i>Home
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="ordiniDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-tasks me-1"></i>Ordini
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="@Url.Action("Index", "Ordini")">Lista Ordini</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Create", "Ordini")">Nuovo Ordine</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="clientiDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-users me-1"></i>Clienti
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="@Url.Action("Index", "Clienti")">Lista Clienti</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Create", "Clienti")">Nuovo Cliente</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index", "Store")">
+                        <i class="fas fa-store me-1"></i>Store
+                    </a>
+                </li>
+            </ul>
+            <div class="d-flex">
+                <button class="btn btn-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="fas fa-sign-in-alt me-1"></i>Accedi
+                </button>
+                <a href="@Url.Action("Index", "Carrello")" class="btn btn-outline-light">
+                    <i class="fas fa-shopping-cart me-1"></i>Carrello
+                </a>
+            </div>
+        </div>
     </div>
 </nav>
 
-<!-- Contenuto Principale -->
-<div class="container">
-    <div class="text-center mt-5">
-        <h1 class="display-4">Ecommerce</h1>
-        <p class="lead">Pagina Gestione</p>
+
+<div class="bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="display-4 fw-bold">Benvenuto nel Pannello di Gestione</h1>
+                <p class="lead">Gestisci il tuo ecommerce in modo semplice ed efficiente</p>
+                <div class="mt-4">
+                    <a href="@Url.Action("Index", "Store")" class="btn btn-light btn-lg me-3">
+                        <i class="fas fa-store me-2"></i>Visita lo Store
+                    </a>
+                    <a href="@Url.Action("Index", "Ordini")" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-tasks me-2"></i>Gestisci Ordini
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 text-center">
+                <img src="https://via.placeholder.com/500x300" alt="Hero Image" class="img-fluid rounded shadow">
+            </div>
+        </div>
     </div>
+</div>
 
-    <!-- Riquadri -->
-    <div class="row mt-5">
-        <!-- Card Gestione Ordini -->
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
+<!-- Statistiche -->
+<div class="container mt-5">
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-tasks fa-3x mb-3 text-primary"></i>
-                    <h5 class="card-title">Gestione Ordini</h5>
-                    <p class="card-text">Gestisci e monitora tutti gli ordini</p>
-                    <a href="@Url.Action("Index", "Ordini")" class="btn btn-primary">Vai agli Ordini</a>
+                    <div class="rounded-circle bg-primary bg-opacity-10 p-3 d-inline-block mb-3">
+                        <i class="fas fa-shopping-cart fa-2x text-primary"></i>
+                    </div>
+                    <h3 class="card-title">@ViewBag.TotaleOrdini</h3>
+                    <p class="card-text text-muted">Ordini Totali</p>
                 </div>
             </div>
         </div>
-
-        <!-- Card Area Clienti -->
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-users fa-3x mb-3 text-success"></i>
-                    <h5 class="card-title">Area Clienti</h5>
-                    <p class="card-text">Gestisci i dati dei clienti</p>
-                    <a href="@Url.Action("Index", "Clienti")" class="btn btn-success">Vai ai Clienti</a>
+                    <div class="rounded-circle bg-success bg-opacity-10 p-3 d-inline-block mb-3">
+                        <i class="fas fa-users fa-2x text-success"></i>
+                    </div>
+                    <h3 class="card-title">@ViewBag.TotaleClienti</h3>
+                    <p class="card-text text-muted">Clienti Totali</p>
                 </div>
             </div>
         </div>
-
-        <!-- Card Visita Store -->
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-store fa-3x mb-3 text-warning"></i>
-                    <h5 class="card-title">Visita lo Store</h5>
-                    <p class="card-text">Esplora il catalogo prodotti</p>
-                    <a href="@Url.Action("Index", "Store")" class="btn btn-warning">Vai allo Store</a>
+                    <div class="rounded-circle bg-warning bg-opacity-10 p-3 d-inline-block mb-3">
+                        <i class="fas fa-box fa-2x text-warning"></i>
+                    </div>
+                    <h3 class="card-title">@ViewBag.TotaleProdotti</h3>
+                    <p class="card-text text-muted">Prodotti Totali</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="rounded-circle bg-info bg-opacity-10 p-3 d-inline-block mb-3">
+                        <i class="fas fa-euro-sign fa-2x text-info"></i>
+                    </div>
+                    <h3 class="card-title">€@ViewBag.FatturatoTotale</h3>
+                    <p class="card-text text-muted">Fatturato Totale</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
-<!-- Footer con Social Media -->
-<footer class="bg-light py-4 mt-5">
-    <div class="container text-center">
-        <div class="d-flex justify-content-center gap-3">
-            <a href="https://facebook.com/tuapagina" target="_blank" class="text-decoration-none">
-                <i class="fab fa-facebook fa-2x text-primary"></i>
-            </a>
-            <a href="https://instagram.com/tuoprofilo" target="_blank" class="text-decoration-none">
-                <i class="fab fa-instagram fa-2x" style="color: #E1306C;"></i>
-            </a>
+<!-- Ultimi Ordini -->
+<div class="container mt-5">
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Ultimi Ordini</h5>
+                <a href="@Url.Action("Index", "Ordini")" class="btn btn-primary btn-sm">
+                    <i class="fas fa-list me-1"></i>Vedi Tutti
+                </a>
+            </div>
         </div>
-        <p class="mt-3 mb-0 text-muted">&copy; 2025 Il Tuo Ecommerce. Tutti i diritti riservati.</p>
+        <div class="card-body">
+            <div class="table-container">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Data</th>
+                            <th>Totale</th>
+                            <th>Stato</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ordine in ViewBag.UltimiOrdini ?? new List<dynamic>())
+                        {
+                            <tr>
+                                <td>@ordine.Id</td>
+                                <td>@ordine.Cliente</td>
+                                <td>@ordine.Data</td>
+                                <td>€@ordine.Totale</td>
+                                <td class="table-status">
+                                    <i class="fas fa-circle"></i>
+                                    @ordine.Stato
+                                </td>
+                                <td class="table-actions">
+                                    <a href="@Url.Action("Details", "Ordini", new { id = ordine.Id })" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-light py-4 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5 class="mb-3">Chi Siamo</h5>
+                <p class="text-muted">Il tuo ecommerce di fiducia per tutti i tuoi acquisti online.</p>
+            </div>
+            <div class="col-md-4">
+                <h5 class="mb-3">Link Rapidi</h5>
+                <ul class="list-unstyled">
+                    <li><a href="@Url.Action("Index", "Store")" class="text-decoration-none text-muted">Store</a></li>
+                    <li><a href="@Url.Action("Index", "Ordini")" class="text-decoration-none text-muted">Ordini</a></li>
+                    <li><a href="@Url.Action("Index", "Clienti")" class="text-decoration-none text-muted">Clienti</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5 class="mb-3">Contattaci</h5>
+                <div class="d-flex gap-3">
+                    <a href="https://facebook.com/tuapagina" target="_blank" class="text-decoration-none">
+                        <i class="fab fa-facebook fa-2x text-primary"></i>
+                    </a>
+                    <a href="https://instagram.com/tuoprofilo" target="_blank" class="text-decoration-none">
+                        <i class="fab fa-instagram fa-2x" style="color: #E1306C;"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <hr class="my-4">
+        <div class="text-center text-muted">
+            <p class="mb-0">&copy; 2025 Il Tuo Ecommerce. Tutti i diritti riservati.</p>
+        </div>
     </div>
 </footer>
 
-<!-- Login -->
+<!-- Login Modal -->
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Accedi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
             <div class="modal-body">
                 <form asp-action="Login" asp-controller="Account" method="post">
                     <div class="form-group mb-3">
@@ -92,7 +238,9 @@
                         <input type="password" class="form-control" id="password" name="password" required>
                     </div>
                     <div class="form-group text-center">
-                        <button type="submit" class="btn btn-danger">Accedi</button>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-sign-in-alt me-2"></i>Accedi
+                        </button>
                     </div>
                 </form>
             </div>
@@ -100,5 +248,112 @@
     </div>
 </div>
 
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+@model IEnumerable<GestioneOrdini.Models.Ordine>
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Dashboard</h1>
+        <p>Panoramica degli ordini e delle statistiche</p>
+    </div>
+
+    <div class="row">
+        <!-- Statistiche -->
+        <div class="col-md-3">
+            <div class="stats-card">
+                <div class="card-title">
+                    <i class="fas fa-shopping-cart me-2"></i>
+                    Ordini Totali
+                </div>
+                <div class="card-value">@Model.Count()</div>
+                <div class="card-text">Totale ordini nel sistema</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stats-card">
+                <div class="card-title">
+                    <i class="fas fa-clock me-2"></i>
+                    In Elaborazione
+                </div>
+                <div class="card-value">@Model.Count(o => o.Stato == Ordine.StatoOrdine.InElaborazione)</div>
+                <div class="card-text">Ordini in elaborazione</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stats-card">
+                <div class="card-title">
+                    <i class="fas fa-check-circle me-2"></i>
+                    Consegnati
+                </div>
+                <div class="card-value">@Model.Count(o => o.Stato == Ordine.StatoOrdine.Consegnato)</div>
+                <div class="card-text">Ordini consegnati</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stats-card">
+                <div class="card-title">
+                    <i class="fas fa-times-circle me-2"></i>
+                    Annullati
+                </div>
+                <div class="card-value">@Model.Count(o => o.Stato == Ordine.StatoOrdine.Annullato)</div>
+                <div class="card-text">Ordini annullati</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabella Ordini -->
+    <div class="dashboard-table mt-4">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Data</th>
+                    <th>Stato</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ordine in Model)
+                {
+                    <tr>
+                        <td class="order-number">#@ordine.Id</td>
+                        <td>
+                            <div class="client-info">
+                                <div class="client-name">@ordine.Cliente.Nome</div>
+                                <div class="client-email">@ordine.Cliente.Email</div>
+                            </div>
+                        </td>
+                        <td class="order-date">@ordine.DataOrdine.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>
+                            <span class="status-badge @(ordine.Stato switch {
+                                Ordine.StatoOrdine.InElaborazione => "bg-warning",
+                                Ordine.StatoOrdine.Spedito => "bg-info",
+                                Ordine.StatoOrdine.Consegnato => "bg-success",
+                                Ordine.StatoOrdine.Annullato => "bg-danger",
+                                _ => "bg-secondary"
+                            })">
+                                <i class="fas fa-circle"></i>
+                                @ordine.Stato
+                            </span>
+                        </td>
+                        <td>
+                            <div class="table-actions">
+                                <a href="@Url.Action("Details", "Ordini", new { id = ordine.Id })" class="btn btn-sm btn-info">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="@Url.Action("Edit", "Ordini", new { id = ordine.Id })" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

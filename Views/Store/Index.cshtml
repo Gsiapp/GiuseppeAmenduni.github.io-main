@@ -1,44 +1,64 @@
-@model IEnumerable<Prodotto>
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 
+@{
+    // Recupera il token usando l'istanza INIETTATA del servizio
+    var token = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+}
+
+@using Microsoft.AspNetCore.Antiforgery
+@using Microsoft.AspNetCore.Http
+
+@model IEnumerable<GestioneOrdini.Models.Prodotto>
 @{
     ViewData["Title"] = "Store";
 }
 
 <div class="container py-5">
     <div class="row">
-        <!-- Filtri -->
-        <div class="col-md-3">
-            <div class="card mb-4">
-                <div class="card-header bg-warning">
-                    <h5 class="mb-0">Filtri</h5>
+        <div class="col-12 text-center mb-5">
+            <br>
+            <br>
+            <h1 class="display-4 fw-bold text-primary mb-3">Il nostro Negozio</h1>
+            <p class="lead mt-4 text-muted">Scopri prodotti selezionati con cura per te</p>
+        </div>
+
+        <!-- Filtri  -->
+        <div class="col-lg-3 mb-4">
+            <div class="card filter-card">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="mb-0"><i class="fas fa-sliders-h me-2"></i>Filtra Prodotti</h5>
                 </div>
                 <div class="card-body">
                     <form asp-action="Index" method="get">
                         <div class="mb-3">
-                            <label class="form-label">Categoria</label>
-                            <select 
-                                name="categoria" 
-                                class="form-select"
-                                onchange="this.form.submit()">
-                                <option value="">Tutte</option>
+                            <label class="form-label fw-bold text-secondary">Categoria</label>
+                            <select name="categoria" class="form-select rounded-pill" onchange="this.form.submit()">
+                                <option value="">Tutte le categorie</option>
                                 @foreach (var cat in ViewBag.Categorie)
                                 {
-                                    <option value="@cat">@cat</option>
+                                    <option value="@cat" selected="@(ViewBag.SelectedCategory == cat ? "selected" : null)">
+                                        @cat
+                                    </option>
                                 }
                             </select>
                         </div>
                         
-                        <div class="mb-3">
-                            <label class="form-label">Cerca</label>
-                            <input 
-                                type="text" 
-                                name="searchString" 
-                                class="form-control"
-                                value="@ViewBag.SearchString">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-secondary">Cerca prodotto</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0 rounded-start-pill">
+                                    <i class="fas fa-search text-secondary"></i>
+                                </span>
+                                <input type="text" 
+                                       name="searchString" 
+                                       class="form-control rounded-end-pill border-start-0"
+                                       placeholder="Cerca..."
+                                       value="@ViewBag.SearchString">
+                            </div>
                         </div>
                         
-                        <button type="submit" class="btn btn-warning w-100">
-                            <i class="fas fa-filter"></i> Applica
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill py-2">
+                            <i class="fas fa-filter me-2"></i>Applica Filtri
                         </button>
                     </form>
                 </div>
@@ -46,22 +66,35 @@
         </div>
 
         <!-- Prodotti -->
-        <div class="col-md-9">
-            <div class="row">
+        <div class="col-lg-9">
+            <div class="row g-4">
                 @foreach (var prodotto in Model)
                 {
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="card h-100 shadow store-card">
-                            <img src="@prodotto.ImmagineUrl" class="card-img-top" alt="@prodotto.Nome">
-                            <div class="card-body">
-                                <h5 class="card-title">@prodotto.Nome</h5>
-                                <p class="card-text text-muted">@prodotto.Descrizione</p>
+                    <div class="col-xl-4 col-md-6">
+                        <div class="card h-100 store-card">
+                            <div class="position-relative">
+                                <img src="@prodotto.ImmagineUrl" class="card-img-top" alt="@prodotto.Nome">
+                                <div class="position-absolute top-0 end-0 m-2">
+                                    <span class="badge bg-danger">Novità</span>
+                                </div>
+                            </div>
+                            <div class="card-body pb-0">
+                                <h5 class="card-title fw-bold mb-3">@prodotto.Nome</h5>
+                                <p class="card-text text-secondary description-clamp">@prodotto.Descrizione</p>
+                            </div>
+                            <div class="card-footer bg-transparent border-0 pt-0">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="h5 text-success">@prodotto.Prezzo.ToString("C")</span>
-                                    <a href="@Url.Action("Details", new { id = prodotto.Id })" 
-                                       class="btn btn-warning">
-                                        <i class="fas fa-info-circle"></i> Dettagli
-                                    </a>
+                                    <div class="price-tag">@prodotto.Prezzo.ToString("C")</div>
+                                    <div class="d-flex gap-2">
+                                        <button onclick="aggiungiAlCarrello(@prodotto.Id)" 
+                                                class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                                            <i class="fas fa-cart-plus me-2"></i>Aggiungi
+                                        </button>
+                                        <a href="@Url.Action("Details", new { id = prodotto.Id })" 
+                                           class="btn btn-warning btn-sm rounded-pill px-3">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -71,3 +104,107 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        function mostraNotifica(tipo, messaggio) {
+            const toast = $(`
+                <div class="toast align-items-center text-white bg-${tipo} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${messaggio}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+            `);
+            
+            $('#toast-container').append(toast);
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+            
+            toast.on('hidden.bs.toast', function() {
+                toast.remove();
+            });
+        }
+
+        function aggiornaContatoreCarrello() {
+            $.get('@Url.Action("GetContatore", "Carrello")', function(count) {
+                $('#carrello-contatore').text(count);
+            });
+        }
+
+        function aggiungiAlCarrello(prodId) {
+            $.ajax({
+                url: '@Url.Action("AggiungiAlCarrello", "Carrello")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    prodottoId: prodId,
+                    quantita: 1
+                }),
+                headers: {
+                    'RequestVerificationToken': '@token'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        mostraNotifica('success', response.message);
+                        aggiornaContatoreCarrello();
+                        if (window.location.pathname.includes('/Carrello')) {
+                            aggiornaCarrello();
+                        }
+                    } else {
+                        mostraNotifica('error', response.message || 'Errore nell\'aggiunta al carrello');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                    console.log('Response:', xhr.responseText);
+                    mostraNotifica('error', 'Si è verificato un errore durante l\'aggiunta al carrello');
+                }
+            });
+        }
+    </script>
+}
+
+<!-- Stili  -->
+<style>
+    .store-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    .store-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+    }
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+        object-position: center;
+        transition: transform 0.3s ease;
+    }
+    .store-card:hover .card-img-top {
+        transform: scale(1.03);
+    }
+    .description-clamp {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 72px;
+    }
+    .price-tag {
+        background: linear-gradient(45deg, white);
+        color: #28a745;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+    .filter-card {
+        position: sticky;
+        top: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+</style>

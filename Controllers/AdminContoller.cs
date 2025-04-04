@@ -6,7 +6,7 @@ public class AdminController : Controller
 {
     public ActionResult Dashboard()
     {
-        // Verifica aggiuntiva per sicurezza
+        // Controlla se l'utente è un admin
         if (HttpContext.Session.GetString("UserRole") != "Admin")
         {
             return RedirectToAction("Login", "Account");

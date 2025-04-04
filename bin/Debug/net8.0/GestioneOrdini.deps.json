@@ -14,6 +14,7 @@
           "Microsoft.EntityFrameworkCore": "8.0.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.0",
           "Microsoft.EntityFrameworkCore.Tools": "8.0.0",
+          "Microsoft.jQuery.Unobtrusive.Validation": "4.0.0",
           "X.PagedList.Mvc.Core": "10.5.7"
         },
         "runtime": {
@@ -76,6 +77,12 @@
             "assemblyVersion": "2.14.0.0",
             "fileVersion": "2.14.1.48190"
           }
+        }
+      },
+      "jQuery/1.8.0": {},
+      "jQuery.Validation/1.8.0.1": {
+        "dependencies": {
+          "jQuery": "1.8.0"
         }
       },
       "Microsoft.AspNetCore.Cryptography.Internal/2.3.0": {},
@@ -683,6 +690,12 @@
           }
         }
       },
+      "Microsoft.jQuery.Unobtrusive.Validation/4.0.0": {
+        "dependencies": {
+          "jQuery": "1.8.0",
+          "jQuery.Validation": "1.8.0.1"
+        }
+      },
       "Microsoft.NETCore.Platforms/1.1.0": {},
       "Microsoft.NETCore.Targets/1.1.0": {},
       "Microsoft.SqlServer.Server/1.0.0": {
@@ -1063,6 +1076,20 @@
       "path": "humanizer.core/2.14.1",
       "hashPath": "humanizer.core.2.14.1.nupkg.sha512"
     },
+    "jQuery/1.8.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-laDFQRJrIRHT0Z0GVYklMt3bE0iu0MZFJwHwg21kt3SHb7Bj8TdNiM3K+ZdK1DzB8ZxKy8z7NkJvwMas+dmHBw==",
+      "path": "jquery/1.8.0",
+      "hashPath": "jquery.1.8.0.nupkg.sha512"
+    },
+    "jQuery.Validation/1.8.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cSBTW8FiNcFYy7h8jY38ffnJGia25HQH/z1TP3f8OKZhn1ZSGS7Bebz9nMevKbtsAjzHhDFp/Cq0cT+ixwiB5A==",
+      "path": "jquery.validation/1.8.0.1",
+      "hashPath": "jquery.validation.1.8.0.1.nupkg.sha512"
+    },
     "Microsoft.AspNetCore.Cryptography.Internal/2.3.0": {
       "type": "package",
       "serviceable": true,
@@ -1377,6 +1404,13 @@
       "sha512": "sha512-ZPqHi86UYuqJXJ7bLnlEctHKkPKT4lGUFbotoCNiXNCSL02emYlcxzGYsRGWWmbFEcYDMi2dcTLLYNzHqWOTsw==",
       "path": "microsoft.identitymodel.tokens/6.24.0",
       "hashPath": "microsoft.identitymodel.tokens.6.24.0.nupkg.sha512"
+    },
+    "Microsoft.jQuery.Unobtrusive.Validation/4.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RJ1eBcFIwHINVocYtOlmBQd21jGgHOHGe7TLzmQ9VMRMUqAlJoxyCw1AayBkdExqrEZt0Wz9uaZiDX75NHQmSw==",
+      "path": "microsoft.jquery.unobtrusive.validation/4.0.0",
+      "hashPath": "microsoft.jquery.unobtrusive.validation.4.0.0.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/1.1.0": {
       "type": "package",

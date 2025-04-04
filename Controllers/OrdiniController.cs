@@ -21,10 +21,10 @@ namespace GestioneOrdini.Controllers
         // GET: Ordini 
        public async Task<IActionResult> Index(string searchString, string sortOrder, int page = 1)
 {
-    // Aggiunti parametri per l'ordinamento dello Stato
+    
     ViewBag.DateSortParam = sortOrder == "date_asc" ? "date_desc" : "date_asc";
     ViewBag.TotalSortParam = sortOrder == "total_asc" ? "total_desc" : "total_asc";
-    ViewBag.StatoSortParam = sortOrder == "stato_asc" ? "stato_desc" : "stato_asc"; // Nuovo
+    ViewBag.StatoSortParam = sortOrder == "stato_asc" ? "stato_desc" : "stato_asc"; 
     ViewBag.CurrentSort = sortOrder;
     ViewBag.SearchString = searchString;
 
@@ -37,7 +37,7 @@ namespace GestioneOrdini.Controllers
             o.Cliente.Cognome.Contains(searchString));
     }
 
-    // Aggiunti casi per l'ordinamento dello Stato
+    // Ordinamento
     switch (sortOrder)
     {
         case "date_desc":

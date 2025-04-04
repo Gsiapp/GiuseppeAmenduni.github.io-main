@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\A564apulia\\Desktop\\GiuseppeAmenduni.github.io-main\\GestioneOrdini.csproj": {}
+    "C:\\Users\\A564apulia\\Desktop\\GiuseppeAmenduni.github.io-main - Copia\\GestioneOrdini.csproj": {}
   },
   "projects": {
-    "C:\\Users\\A564apulia\\Desktop\\GiuseppeAmenduni.github.io-main\\GestioneOrdini.csproj": {
+    "C:\\Users\\A564apulia\\Desktop\\GiuseppeAmenduni.github.io-main - Copia\\GestioneOrdini.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\A564apulia\\Desktop\\GiuseppeAmenduni.github.io-main\\GestioneOrdini.csproj",
+        "projectUniqueName": "C:\\Users\\A564apulia\\Desktop\\GiuseppeAmenduni.github.io-main - Copia\\GestioneOrdini.csproj",
         "projectName": "GestioneOrdini",
-        "projectPath": "C:\\Users\\A564apulia\\Desktop\\GiuseppeAmenduni.github.io-main\\GestioneOrdini.csproj",
+        "projectPath": "C:\\Users\\A564apulia\\Desktop\\GiuseppeAmenduni.github.io-main - Copia\\GestioneOrdini.csproj",
         "packagesPath": "C:\\Users\\A564apulia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\A564apulia\\Desktop\\GiuseppeAmenduni.github.io-main\\obj\\",
+        "outputPath": "C:\\Users\\A564apulia\\Desktop\\GiuseppeAmenduni.github.io-main - Copia\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -71,6 +71,10 @@
             "Microsoft.EntityFrameworkCore.Tools": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "Microsoft.jQuery.Unobtrusive.Validation": {
+              "target": "Package",
+              "version": "[4.0.0, )"
             },
             "X.PagedList.Mvc.Core": {
               "target": "Package",

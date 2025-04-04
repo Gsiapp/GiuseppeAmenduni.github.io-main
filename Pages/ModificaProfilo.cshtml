@@ -1,0 +1,63 @@
+@page
+@model GestioneOrdini.Pages.ModificaProfiloModel
+@{
+    ViewData["Title"] = "Modifica Profilo";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Modifica Profilo</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <input type="hidden" asp-for="Cliente.Id" />
+                        
+                        <div class="form-group mb-3">
+                            <label asp-for="Cliente.Nome" class="control-label"></label>
+                            <input asp-for="Cliente.Nome" class="form-control" />
+                            <span asp-validation-for="Cliente.Nome" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Cliente.Cognome" class="control-label"></label>
+                            <input asp-for="Cliente.Cognome" class="form-control" />
+                            <span asp-validation-for="Cliente.Cognome" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Cliente.Email" class="control-label"></label>
+                            <input asp-for="Cliente.Email" class="form-control" />
+                            <span asp-validation-for="Cliente.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Cliente.Telefono" class="control-label"></label>
+                            <input asp-for="Cliente.Telefono" class="form-control" />
+                            <span asp-validation-for="Cliente.Telefono" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Cliente.Indirizzo" class="control-label"></label>
+                            <input asp-for="Cliente.Indirizzo" class="form-control" />
+                            <span asp-validation-for="Cliente.Indirizzo" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary">Salva Modifiche</button>
+                            <a asp-page="/Index" class="btn btn-secondary">Annulla</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

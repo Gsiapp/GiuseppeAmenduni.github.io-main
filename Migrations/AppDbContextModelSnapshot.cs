@@ -22,6 +22,67 @@ namespace GestioneOrdini.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("GestioneOrdini.Models.Carrello", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataCreazione")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Carrelli");
+                });
+
+            modelBuilder.Entity("GestioneOrdini.Models.CarrelloItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CarrelloId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NomeProdotto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Prezzo")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProdottoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantita")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarrelloId");
+
+                    b.HasIndex("ProdottoId");
+
+                    b.ToTable("CarrelloItems");
+                });
+
             modelBuilder.Entity("GestioneOrdini.Models.Cliente", b =>
                 {
                     b.Property<int>("Id")
@@ -120,6 +181,21 @@ namespace GestioneOrdini.Migrations
                     b.ToTable("Prodotti");
                 });
 
+            modelBuilder.Entity("GestioneOrdini.Models.CarrelloItem", b =>
+                {
+                    b.HasOne("GestioneOrdini.Models.Carrello", null)
+                        .WithMany("Items")
+                        .HasForeignKey("CarrelloId");
+
+                    b.HasOne("GestioneOrdini.Models.Prodotto", "Prodotto")
+                        .WithMany()
+                        .HasForeignKey("ProdottoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Prodotto");
+                });
+
             modelBuilder.Entity("GestioneOrdini.Models.Ordine", b =>
                 {
                     b.HasOne("GestioneOrdini.Models.Cliente", "Cliente")
@@ -129,6 +205,11 @@ namespace GestioneOrdini.Migrations
                         .IsRequired();
 
                     b.Navigation("Cliente");
+                });
+
+            modelBuilder.Entity("GestioneOrdini.Models.Carrello", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("GestioneOrdini.Models.Cliente", b =>

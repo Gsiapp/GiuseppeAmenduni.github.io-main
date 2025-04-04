@@ -7,17 +7,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System;
 using Microsoft.AspNetCore.Http;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+
+
+using GestioneOrdini.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Aggiungi il DbContext
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Aggiungi i servizi di autenticazione
+// servizi di autenticazione
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -25,15 +26,17 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Account/AccessDenied";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Durata della sessione
     });
+
+    builder.Services.AddScoped<ICarrelloService, CarrelloService>();
 builder.Services.AddHttpContextAccessor();
-// Aggiungi i servizi di autorizzazione
+// servizi di autorizzazione
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
     options.AddPolicy("Cliente", policy => policy.RequireRole("Cliente"));
 });
+builder.Services.AddScoped<CarrelloService>();
 
-// Aggiungi Razor Pages e Controller con Views con i filtri
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews(options => 
 {
@@ -44,7 +47,7 @@ builder.Services.AddControllersWithViews(options =>
 // Configura i servizi di sessione
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);  // Imposta il timeout della sessione
+    options.IdleTimeout = TimeSpan.FromMinutes(30); 
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
     options.Cookie.SameSite = SameSiteMode.Lax;
@@ -83,9 +86,11 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
-    // Logica per il seeding dei dati
+    
 }
 
 app.Run();
+
+
 
 

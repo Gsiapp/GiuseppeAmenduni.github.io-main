@@ -1,0 +1,146 @@
+@using static Humanizer.In
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
+@{
+    var token = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+}
+
+@model List<CarrelloItem>
+
+@{
+    ViewData["Title"] = "Carrello";
+}
+<br>
+<br>
+<div class="container py-5">
+    <h1 class="mb-4">Il tuo Carrello</h1>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>Il tuo carrello è vuoto.
+            <a href="@Url.Action("Index", "Store")" class="alert-link">Continua lo shopping</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        @foreach (var item in Model)
+                        {
+                            <div class="d-flex align-items-center mb-4" id="carrello-item-@item.ProdottoId">
+                                <div class="flex-grow-1">
+                                    <h5 class="mb-1">@item.Nome</h5>
+                                    <p class="text-muted mb-0">€@item.Prezzo.ToString("N2")</p>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="input-group me-3" style="width: 120px;">
+                                        <button class="btn btn-outline-secondary" type="button" 
+                                                onclick="aggiornaQuantita(@item.ProdottoId, @(item.Quantita - 1))">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <input type="number" class="form-control text-center" 
+                                               value="@item.Quantita" min="1" readonly>
+                                        <button class="btn btn-outline-secondary" type="button"
+                                                onclick="aggiornaQuantita(@item.ProdottoId, @(item.Quantita + 1))">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <button class="btn btn-outline-danger" 
+                                            onclick="rimuoviDalCarrello(@item.ProdottoId)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <hr>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Riepilogo Ordine</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotale</span>
+                            <span>€@Model.Sum(i => i.Prezzo * i.Quantita).ToString("N2")</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>IVA (22%)</span>
+                            <span>€@(Model.Sum(i => i.Prezzo * i.Quantita) * 0.22m).ToString("N2")</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <strong>Totale</strong>
+                            <strong>€@(Model.Sum(i => i.Prezzo * i.Quantita) * 1.22m).ToString("N2")</strong>
+                        </div>
+                        <a href="@Url.Action("Checkout", "Ordini")" class="btn btn-primary w-100">
+                            <i class="fas fa-shopping-cart me-2"></i>Procedi al Checkout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function aggiornaQuantita(itemId, nuovaQuantita) {
+            $.ajax({
+                url: '@Url.Action("AggiornaQuantita", "Carrello")',
+                type: 'POST',
+                data: { 
+                    prodottoId: itemId,
+                    quantita: nuovaQuantita
+                },
+                headers: {
+                    'RequestVerificationToken': '@token'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert(response.message || 'Errore nell\'aggiornamento della quantità');
+                    }
+                },
+                error: function() {
+                    alert('Si è verificato un errore durante l\'aggiornamento della quantità');
+                }
+            });
+        }
+
+        function rimuoviDalCarrello(itemId) {
+            if (confirm('Sei sicuro di voler rimuovere questo prodotto dal carrello?')) {
+                $.ajax({
+                    url: '@Url.Action("RimuoviDalCarrello", "Carrello")',
+                    type: 'POST',
+                    data: { 
+                        prodottoId: itemId
+                    },
+                    headers: {
+                        'RequestVerificationToken': '@token'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            location.reload();
+                        } else {
+                            alert(response.message || 'Errore nella rimozione del prodotto');
+                        }
+                    },
+                    error: function() {
+                        alert('Si è verificato un errore durante la rimozione del prodotto');
+                    }
+                });
+            }
+        }
+
+        // Funzione per aggiornare il carrello quando viene aggiunto un prodotto
+        function aggiornaCarrello() {
+            location.reload();
+        }
+    </script>
+}
