@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using System;
+using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 
 namespace GestioneOrdini.Controllers
 {
@@ -14,15 +17,24 @@ namespace GestioneOrdini.Controllers
         private readonly AppDbContext _context;
         private readonly CarrelloService _carrelloService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ILogger<CarrelloController> _logger;
+        private readonly IAntiforgery _antiforgery;
+        private readonly IHostEnvironment _environment;
 
         public CarrelloController(
             AppDbContext context, 
             CarrelloService carrelloService,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            ILogger<CarrelloController> logger,
+            IAntiforgery antiforgery,
+            IHostEnvironment environment)
         {
             _context = context;
             _carrelloService = carrelloService;
             _httpContextAccessor = httpContextAccessor;
+            _logger = logger;
+            _antiforgery = antiforgery;
+            _environment = environment;
         }
 
         private string GetUserId()
@@ -30,21 +42,10 @@ namespace GestioneOrdini.Controllers
             var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
             {
-                // Se l'utente non è autenticato, crea un ID temporaneo basato sulla sessione
                 userId = _httpContextAccessor.HttpContext?.Session.Id;
+                _httpContextAccessor.HttpContext?.Session.SetString("TempUserId", userId);
             }
             return userId;
-        }
-
-        public IActionResult Index()
-        {
-            var userId = GetUserId();
-            if (userId == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            var carrello = _carrelloService.GetCarrelloUtente(userId);
-            return View(carrello);
         }
 
         [HttpPost]
@@ -56,66 +57,144 @@ namespace GestioneOrdini.Controllers
                 var userId = GetUserId();
                 if (userId == null)
                 {
-                    return Json(new { success = false, message = "Devi effettuare l'accesso per aggiungere prodotti al carrello" });
+                    return Json(new { success = false, message = "Accesso richiesto" });
                 }
 
                 await _carrelloService.AggiungiProdottoAsync(userId, model.ProdottoId, model.Quantita);
+                
+                // Aggiorna il contatore nella sessione
+                var count = await _carrelloService.GetConteggioCarrelloAsync(userId);
+                _httpContextAccessor.HttpContext?.Session?.SetInt32("CarrelloCount", count);
+                
                 return Json(new { success = true, message = "Prodotto aggiunto al carrello" });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "Si è verificato un errore durante l'aggiunta al carrello" });
+                _logger.LogError(ex, "Errore aggiunta al carrello");
+                return Json(new { 
+                    success = false, 
+                    message = _environment.IsDevelopment() ? ex.Message : "Errore durante l'operazione" 
+                });
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RimuoviDalCarrello(int prodottoId)
+        public async Task<IActionResult> RimuoviDalCarrello([FromBody] RimuoviDalCarrelloModel model)
         {
-            var userId = GetUserId();
-            if (userId == null)
+            try
             {
-                return Json(new { success = false, message = "Devi effettuare l'accesso per rimuovere prodotti dal carrello" });
-            }
+                var userId = GetUserId();
+                if (userId == null)
+                {
+                    return Json(new { success = false, message = "Accesso richiesto" });
+                }
 
-            await _carrelloService.RimuoviProdottoAsync(userId, prodottoId);
-            return Json(new { success = true, message = "Prodotto rimosso dal carrello" });
+                if (model == null || model.ProdottoId <= 0)
+                {
+                    return Json(new { success = false, message = "ID prodotto non valido" });
+                }
+
+                await _carrelloService.RimuoviProdottoAsync(userId, model.ProdottoId);
+                
+                // Aggiorna il contatore nella sessione
+                var count = await _carrelloService.GetConteggioCarrelloAsync(userId);
+                _httpContextAccessor.HttpContext?.Session?.SetInt32("CarrelloCount", count);
+                
+                return Json(new { success = true, message = "Prodotto rimosso" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Errore rimozione dal carrello");
+                return Json(new { 
+                    success = false, 
+                    message = _environment.IsDevelopment() ? ex.Message : "Errore durante l'operazione" 
+                });
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AggiornaQuantita(int prodottoId, int quantita)
+        public async Task<IActionResult> AggiornaQuantita([FromBody] AggiornaQuantitaModel model)
         {
-            var userId = GetUserId();
-            if (userId == null)
+            try
             {
-                return Json(new { success = false, message = "Devi effettuare l'accesso per aggiornare il carrello" });
-            }
+                var userId = GetUserId();
+                if (userId == null)
+                {
+                    return Json(new { success = false, message = "Accesso richiesto" });
+                }
 
-            var successo = await _carrelloService.AggiornaQuantitaAsync(userId, prodottoId, quantita);
-            return Json(new { 
-                success = successo, 
-                message = successo ? "Quantità aggiornata" : "Prodotto non trovato" 
-            });
+                var successo = await _carrelloService.AggiornaQuantitaAsync(userId, model.ProdottoId, model.Quantita);
+                return Json(new { 
+                    success = successo, 
+                    message = successo ? "Quantità aggiornata" : "Prodotto non trovato" 
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Errore aggiornamento quantità");
+                return Json(new { 
+                    success = false, 
+                    message = _environment.IsDevelopment() ? ex.Message : "Errore durante l'operazione" 
+                });
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> GetContatore()
         {
+            try
+            {
+                var userId = GetUserId();
+                if (userId == null)
+                {
+                    return Json(0);
+                }
+
+                var count = await _carrelloService.GetConteggioCarrelloAsync(userId);
+                
+                // Aggiorna anche la sessione
+                _httpContextAccessor.HttpContext?.Session?.SetInt32("CarrelloCount", count);
+                
+                return Json(count);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Errore nel recupero del contatore del carrello");
+                return Json(0);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
             var userId = GetUserId();
             if (userId == null)
             {
-                return Json(0);
+                return RedirectToAction("Login", "Account");
             }
 
-            var totale = await _carrelloService.GetConteggioCarrelloAsync(userId);
-            return Json(totale);
+            var items = await _carrelloService.GetCarrelloItemsAsync(userId);
+            return View(items);
         }
 
+        // Modelli
         public class AggiungiAlCarrelloModel
         {
             public int ProdottoId { get; set; }
             public int Quantita { get; set; }
+        }
+
+        public class AggiornaQuantitaModel
+        {
+            public int ProdottoId { get; set; }
+            public int Quantita { get; set; }
+        }
+
+        public class RimuoviDalCarrelloModel
+        {
+            public int ProdottoId { get; set; }
         }
     }
 }

@@ -1,4 +1,3 @@
-
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,15 +10,15 @@ namespace GestioneOrdini.Models
         public int Id { get; set; }
         
         [Required]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
         [Required]
-        public string Nome { get; set; }
+        public string Nome { get; set; } = string.Empty;
         
         [Required]
         public int ProdottoId { get; set; }
         
         [Display(Name = "Nome Prodotto")]
-        public string NomeProdotto { get; set; }
+        public string NomeProdotto { get; set; } = string.Empty;
 
         
         [Display(Name = "Quantità")]
@@ -33,6 +32,6 @@ namespace GestioneOrdini.Models
         public decimal Totale => Prezzo * Quantita;
         
         [ForeignKey("ProdottoId")]
-        public virtual Prodotto Prodotto { get; set; }
+        public virtual Prodotto Prodotto { get; set; } = null!;
     }
 }

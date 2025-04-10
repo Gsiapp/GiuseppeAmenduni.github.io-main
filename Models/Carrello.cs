@@ -15,6 +15,6 @@ namespace GestioneOrdini.Models
         
         public DateTime DataCreazione { get; set; }
         
-        public virtual ICollection<CarrelloItem> Items { get; set; }
+        public virtual ICollection<CarrelloItem> Items { get; set; } = new List<CarrelloItem>();
     }
 }

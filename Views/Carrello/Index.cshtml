@@ -93,10 +93,11 @@
             $.ajax({
                 url: '@Url.Action("AggiornaQuantita", "Carrello")',
                 type: 'POST',
-                data: { 
-                    prodottoId: itemId,
-                    quantita: nuovaQuantita
-                },
+                contentType: 'application/json',
+                data: JSON.stringify({ 
+                    ProdottoId: itemId,
+                    Quantita: nuovaQuantita
+                }),
                 headers: {
                     'RequestVerificationToken': '@token'
                 },
@@ -111,31 +112,6 @@
                     alert('Si è verificato un errore durante l\'aggiornamento della quantità');
                 }
             });
-        }
-
-        function rimuoviDalCarrello(itemId) {
-            if (confirm('Sei sicuro di voler rimuovere questo prodotto dal carrello?')) {
-                $.ajax({
-                    url: '@Url.Action("RimuoviDalCarrello", "Carrello")',
-                    type: 'POST',
-                    data: { 
-                        prodottoId: itemId
-                    },
-                    headers: {
-                        'RequestVerificationToken': '@token'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            location.reload();
-                        } else {
-                            alert(response.message || 'Errore nella rimozione del prodotto');
-                        }
-                    },
-                    error: function() {
-                        alert('Si è verificato un errore durante la rimozione del prodotto');
-                    }
-                });
-            }
         }
 
         // Funzione per aggiornare il carrello quando viene aggiunto un prodotto

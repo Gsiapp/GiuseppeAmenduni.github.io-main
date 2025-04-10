@@ -8,13 +8,13 @@ namespace GestioneOrdini.Pages.Account
     public class LoginModel : PageModel
     {
         [BindProperty]
-        public string Username { get; set; }
+        public string Username { get; set; } = string.Empty;
 
         [BindProperty]
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
 
         [BindProperty(SupportsGet = true)]
-        public string ReturnUrl { get; set; }
+        public string ReturnUrl { get; set; } = string.Empty;
 
         public void OnGet()
         {

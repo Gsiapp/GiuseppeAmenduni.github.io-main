@@ -1,8 +1,17 @@
 function aggiungiAlCarrello(prodottoId, quantita = 1) {
+    var token = $('input[name="__RequestVerificationToken"]').val();
+    
     $.ajax({
         url: '/Carrello/AggiungiAlCarrello',
         type: 'POST',
-        data: { prodottoId: prodottoId, quantita: quantita },
+        contentType: 'application/json',
+        data: JSON.stringify({ 
+            ProdottoId: prodottoId, 
+            Quantita: quantita 
+        }),
+        headers: {
+            'RequestVerificationToken': token
+        },
         success: function(response) {
             if (response.success) {
                 aggiornaContatoreCarrello();
@@ -11,38 +20,57 @@ function aggiungiAlCarrello(prodottoId, quantita = 1) {
                 mostraNotifica('error', response.message);
             }
         },
-        error: function() {
-            mostraNotifica('error', 'Si è verificato un errore durante l\'aggiunta al carrello');
+        error: function(xhr) {
+            mostraNotifica('error', xhr.responseJSON?.message || 'Errore durante l\'aggiunta al carrello');
         }
     });
 }
 
 function rimuoviDalCarrello(prodottoId) {
+    var token = $('input[name="__RequestVerificationToken"]').val();
+    
     $.ajax({
         url: '/Carrello/RimuoviDalCarrello',
         type: 'POST',
-        data: { prodottoId: prodottoId },
+        contentType: 'application/json',
+        data: JSON.stringify({ 
+            ProdottoId: prodottoId 
+        }),
+        headers: {
+            'RequestVerificationToken': token
+        },
         success: function(response) {
             if (response.success) {
                 aggiornaContatoreCarrello();
                 mostraNotifica('success', response.message);
-                // Rimuovi l'elemento dalla vista
                 $(`#carrello-item-${prodottoId}`).remove();
+                if ($('.carrello-item').length === 0) {
+                    location.reload();
+                }
             } else {
                 mostraNotifica('error', response.message);
             }
         },
-        error: function() {
-            mostraNotifica('error', 'Si è verificato un errore durante la rimozione dal carrello');
+        error: function(xhr) {
+            mostraNotifica('error', xhr.responseJSON?.message || 'Errore durante la rimozione dal carrello');
         }
     });
 }
 
 function aggiornaQuantita(prodottoId, quantita) {
+    var token = $('input[name="__RequestVerificationToken"]').val();
+    
     $.ajax({
         url: '/Carrello/AggiornaQuantita',
         type: 'POST',
-        data: { prodottoId: prodottoId, quantita: quantita },
+        contentType: 'application/json',
+        data: JSON.stringify({ 
+            ProdottoId: prodottoId, 
+            Quantita: quantita 
+        }),
+        headers: {
+            'RequestVerificationToken': token
+        },
         success: function(response) {
             if (response.success) {
                 aggiornaContatoreCarrello();
@@ -51,8 +79,8 @@ function aggiornaQuantita(prodottoId, quantita) {
                 mostraNotifica('error', response.message);
             }
         },
-        error: function() {
-            mostraNotifica('error', 'Si è verificato un errore durante l\'aggiornamento della quantità');
+        error: function(xhr) {
+            mostraNotifica('error', xhr.responseJSON?.message || 'Errore durante l\'aggiornamento');
         }
     });
 }
@@ -65,7 +93,7 @@ function aggiornaContatoreCarrello() {
 
 function mostraNotifica(tipo, messaggio) {
     const toast = $(`
-        <div class="toast align-items-center text-white bg-${tipo} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast align-items-center text-white bg-${tipo === 'success' ? 'success' : 'danger'} border-0" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
                     ${messaggio}

@@ -17,7 +17,6 @@ namespace GestioneOrdini.Services
     
         
         Task<int> GetConteggioCarrelloAsync(string userId);
-
-        
+        Task<List<CarrelloItem>> GetCarrelloItemsAsync(string userId);
     }
 }

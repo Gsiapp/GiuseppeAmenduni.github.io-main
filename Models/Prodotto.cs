@@ -7,16 +7,16 @@ namespace GestioneOrdini.Models
         public int Id { get; set; }
 
         [Required]
-        public string Nome { get; set; }
+        public string Nome { get; set; } = string.Empty;
 
         [Display(Name = "Descrizione")]
-        public string Descrizione { get; set; }
+        public string Descrizione { get; set; } = string.Empty;
 
         [DataType(DataType.Currency)]
         public decimal Prezzo { get; set; }
 
         [Display(Name = "Immagine")]
-        public string ImmagineUrl { get; set; }
+        public string ImmagineUrl { get; set; } = string.Empty;
 
         [Display(Name = "Disponibilità")]
         public int QuantitaDisponibile { get; set; }

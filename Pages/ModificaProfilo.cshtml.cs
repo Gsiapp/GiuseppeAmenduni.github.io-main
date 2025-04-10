@@ -18,6 +18,14 @@ namespace GestioneOrdini.Pages
         public ModificaProfiloModel(AppDbContext context)
         {
             _context = context;
+            Cliente = new Models.Cliente
+            {
+                Nome = string.Empty,
+                Cognome = string.Empty,
+                Email = string.Empty,
+                Telefono = string.Empty,
+                Indirizzo = string.Empty
+            };
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)

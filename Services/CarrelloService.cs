@@ -106,5 +106,24 @@ namespace GestioneOrdini.Services
             _context.CarrelloItems.RemoveRange(items);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<CarrelloItem>> GetCarrelloItemsAsync(string userId)
+        {
+            return await _context.CarrelloItems
+                .Include(c => c.Prodotto)
+                .Where(c => c.UserId == userId)
+                .Select(c => new CarrelloItem
+                {
+                    Id = c.Id,
+                    UserId = c.UserId,
+                    ProdottoId = c.ProdottoId,
+                    Quantita = c.Quantita,
+                    Prezzo = c.Prezzo,
+                    Nome = c.Prodotto.Nome,
+                    NomeProdotto = c.Prodotto.Nome,
+                    Prodotto = c.Prodotto
+                })
+                .ToListAsync();
+        }
     }
 }
