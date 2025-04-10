@@ -11,16 +11,16 @@ using GestioneOrdini.Data;
 
 namespace GestioneOrdini.Controllers
 {
-    public class AccountController : Controller
+    public class UserAccountController : Controller
     {
         private readonly ICarrelloService _carrelloService;
         private readonly AppDbContext _context;
-        private readonly ILogger<AccountController> _logger;
+        private readonly ILogger<UserAccountController> _logger;
 
-        public AccountController(
+        public UserAccountController(
             ICarrelloService carrelloService, 
             AppDbContext context, 
-            ILogger<AccountController> logger)
+            ILogger<UserAccountController> logger)
         {
             _carrelloService = carrelloService ?? throw new ArgumentNullException(nameof(carrelloService));
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -105,7 +105,7 @@ namespace GestioneOrdini.Controllers
         public ActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Login", "UserAccount");
         }
 
         [HttpGet]
@@ -200,4 +200,4 @@ namespace GestioneOrdini.Controllers
             return View(model);
         }
     }
-}
+} 

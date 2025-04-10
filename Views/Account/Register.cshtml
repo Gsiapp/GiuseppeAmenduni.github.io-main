@@ -1,0 +1,177 @@
+@model GestioneOrdini.Models.RegisterViewModel
+@{
+    Layout = "_LoginLayout";
+    ViewData["Title"] = "Registrazione";
+}
+
+<div class="login-page">
+    <div class="login-container">
+        <div class="login-header">
+            <h1 class="display-4 fw-bold text-primary mb-2">ECOMMERCE</h1>
+            <h2 class="h4 mb-4">Registrazione</h2>
+            <p>Crea il tuo account per iniziare</p>
+        </div>
+
+        <form method="post" asp-controller="Account" asp-action="Register" class="login-form">
+            @Html.AntiForgeryToken()
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <div>
+                        <strong>Errore di registrazione</strong>
+                        <p>@ViewBag.Error</p>
+                    </div>
+                </div>
+            }
+
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="Nome" class="form-label"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input asp-for="Nome" class="form-control" placeholder="Inserisci il nome" />
+                        </div>
+                        <span asp-validation-for="Nome" class="text-danger small"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="Cognome" class="form-label"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input asp-for="Cognome" class="form-control" placeholder="Inserisci il cognome" />
+                        </div>
+                        <span asp-validation-for="Cognome" class="text-danger small"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    <input asp-for="Email" class="form-control" placeholder="esempio@email.com" type="email" />
+                </div>
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Telefono" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                    <input asp-for="Telefono" class="form-control" placeholder="Inserisci il numero di telefono" />
+                </div>
+                <span asp-validation-for="Telefono" class="text-danger small"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Indirizzo" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-home"></i></span>
+                    <input asp-for="Indirizzo" class="form-control" placeholder="Inserisci l'indirizzo completo" />
+                </div>
+                <span asp-validation-for="Indirizzo" class="text-danger small"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    <input asp-for="Password" class="form-control" placeholder="Inserisci la password" />
+                </div>
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="ConfirmPassword" class="form-label"></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Conferma la password" />
+                </div>
+                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+            </div>
+
+            <button type="submit" class="btn btn-login w-100">
+                <i class="fas fa-user-plus me-2"></i>
+                Registrati
+            </button>
+        </form>
+
+        <div class="login-footer">
+            <p>Hai già un account?</p>
+            <a href="@Url.Action("Login", "Account")">
+                <i class="fas fa-sign-in-alt me-1"></i>
+                Accedi
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    .login-container {
+        max-width: 600px;
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin: 2rem auto;
+    }
+    .login-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .login-form {
+        margin-bottom: 1.5rem;
+    }
+    .login-footer {
+        text-align: center;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #eee;
+    }
+    .form-control {
+        border-radius: 10px;
+        padding: 0.8rem 1rem;
+    }
+    .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+    }
+    .btn-login {
+        background-color: #0d6efd;
+        color: white;
+        border-radius: 10px;
+        padding: 0.8rem;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+    .btn-login:hover {
+        background-color: #0b5ed7;
+        transform: translateY(-2px);
+        color: white;
+    }
+    .input-group-text {
+        background-color: #f8f9fa;
+        border-right: none;
+    }
+    .input-group .form-control {
+        border-left: none;
+    }
+    .input-group:focus-within .input-group-text {
+        border-color: #86b7fe;
+    }
+    .input-group:focus-within .form-control {
+        border-color: #86b7fe;
+    }
+</style>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 
