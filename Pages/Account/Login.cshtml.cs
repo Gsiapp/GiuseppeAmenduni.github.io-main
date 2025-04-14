@@ -1,12 +1,21 @@
-using System.Linq;
+using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using GestioneOrdini.Services;
 
 namespace GestioneOrdini.Pages.Account
 {
     public class LoginModel : PageModel
     {
+        private readonly ICredentialsStore _credentialsStore;
+
+        public LoginModel(ICredentialsStore credentialsStore)
+        {
+            _credentialsStore = credentialsStore;
+        }
+
         [BindProperty]
         public string Username { get; set; } = string.Empty;
 
@@ -16,6 +25,8 @@ namespace GestioneOrdini.Pages.Account
         [BindProperty(SupportsGet = true)]
         public string ReturnUrl { get; set; } = string.Empty;
 
+        public string? ErrorMessage { get; set; }
+
         public void OnGet()
         {
             // Inizializza la pagina
@@ -23,35 +34,33 @@ namespace GestioneOrdini.Pages.Account
 
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
+                ErrorMessage = "Inserisci username e password";
                 return Page();
             }
 
-            // Verifica le credenziali
-            var lowerUsername = Username?.ToLower();    
-            if (CredentialsStore.Admins.Keys.Any(k => k.ToLower() == lowerUsername))
+            var lowerUsername = Username.ToLower();
+
+            // Verifica credenziali admin
+            if (_credentialsStore.VerifyAdminCredentials(lowerUsername, Password))
             {
-                var adminKey = CredentialsStore.Admins.Keys.First(k => k.ToLower() == lowerUsername);
-                if (BCrypt.Net.BCrypt.Verify(Password, CredentialsStore.Admins[adminKey]))
-                {
-                    HttpContext.Session.SetString("UserRole", "Admin");
-                    return RedirectToPage("/Admin/Dashboard");
-                }
+                HttpContext.Session.SetString("UserRole", "Admin");
+                return RedirectToPage("/Admin/Dashboard");
             }
-            else if (CredentialsStore.Clienti.Keys.Any(k => k.ToLower() == lowerUsername))
+
+            // Verifica credenziali cliente
+            if (await _credentialsStore.VerifyClienteCredentialsAsync(lowerUsername, Password))
             {
-                var clienteKey = CredentialsStore.Clienti.Keys.First(k => k.ToLower() == lowerUsername);
-                if (BCrypt.Net.BCrypt.Verify(Password, CredentialsStore.Clienti[clienteKey]))
-                {
-                    HttpContext.Session.SetString("UserRole", "Cliente");
-                    return RedirectToPage("/Client/Dashboard");
-                }
+                HttpContext.Session.SetString("UserRole", "Customer");
+                HttpContext.Session.SetString("UserId", lowerUsername);
+                return RedirectToPage("/Store/Index");
             }
-            
-            return RedirectToPage("/Index");
+
+            ErrorMessage = "Credenziali non valide";
+            return Page();
         }
     }
 } 

@@ -16,15 +16,18 @@ namespace GestioneOrdini.Controllers
         private readonly ICarrelloService _carrelloService;
         private readonly AppDbContext _context;
         private readonly ILogger<UserAccountController> _logger;
+        private readonly ICredentialsStore _credentialsStore;
 
         public UserAccountController(
             ICarrelloService carrelloService, 
             AppDbContext context, 
-            ILogger<UserAccountController> logger)
+            ILogger<UserAccountController> logger,
+            ICredentialsStore credentialsStore)
         {
             _carrelloService = carrelloService ?? throw new ArgumentNullException(nameof(carrelloService));
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _credentialsStore = credentialsStore ?? throw new ArgumentNullException(nameof(credentialsStore));
         }
 
         [HttpGet]
@@ -48,44 +51,33 @@ namespace GestioneOrdini.Controllers
                 Console.WriteLine($"Tentativo di login per username: {lowerUsername}");
 
                 // Controlla admin
-                if (CredentialsStore.Admins.Keys.Any(k => k.ToLower() == lowerUsername))
+                if (_credentialsStore.VerifyAdminCredentials(lowerUsername, password))
                 {
-                    var adminKey = CredentialsStore.Admins.Keys.First(k => k.ToLower() == lowerUsername);
-                    Console.WriteLine($"Trovato admin: {adminKey}");
+                    Console.WriteLine("Password admin verificata correttamente");
+                    HttpContext.Session.SetString("UserRole", "Admin");
                     
-                    if (BCrypt.Net.BCrypt.Verify(password, CredentialsStore.Admins[adminKey]))
-                    {
-                        Console.WriteLine("Password admin verificata correttamente");
-                        HttpContext.Session.SetString("UserRole", "Admin");
-                        
-                        // Debug session
-                        var testRole = HttpContext.Session.GetString("UserRole");
-                        Console.WriteLine($"Valore sessione admin: {testRole}");
-                        
-                        return RedirectToAction("Dashboard", "Admin");
-                    }
+                    // Debug session
+                    var testRole = HttpContext.Session.GetString("UserRole");
+                    Console.WriteLine($"Valore sessione admin: {testRole}");
+                    
+                    return RedirectToAction("Dashboard", "Admin");
                 }
                 // Controlla cliente
-                else if (CredentialsStore.Clienti.Keys.Any(k => k.ToLower() == lowerUsername))
+                else if (await _credentialsStore.VerifyClienteCredentialsAsync(lowerUsername, password))
                 {
-                    var clienteKey = CredentialsStore.Clienti.Keys.First(k => k.ToLower() == lowerUsername);
-                    Console.WriteLine($"Trovato cliente: {clienteKey}");
+                    Console.WriteLine("Password cliente verificata correttamente");
+                    HttpContext.Session.SetString("UserRole", "Customer");
+                    HttpContext.Session.SetString("UserId", lowerUsername);
+
+                    // Recupera carrello esistente o creane uno nuovo
+                    var carrello = await _carrelloService.GetCarrelloUtenteAsync(lowerUsername);
+                    HttpContext.Session.SetInt32("CarrelloCount", carrello?.Items.Count ?? 0);
+
+                    // Debug session
+                    var testRole = HttpContext.Session.GetString("UserRole");
+                    Console.WriteLine($"Valore sessione cliente: {testRole}");
                     
-                    if (BCrypt.Net.BCrypt.Verify(password, CredentialsStore.Clienti[clienteKey]))
-                    {
-                        Console.WriteLine("Password cliente verificata correttamente");
-                        HttpContext.Session.SetString("UserRole", "Customer");
-
-                        // Recupera carrello esistente o creane uno nuovo
-                        var carrello = await _carrelloService.GetCarrelloUtenteAsync(clienteKey);
-                        HttpContext.Session.SetInt32("CarrelloCount", carrello?.Items.Count ?? 0);
-
-                        // Debug session
-                        var testRole = HttpContext.Session.GetString("UserRole");
-                        Console.WriteLine($"Valore sessione cliente: {testRole}");
-                        
-                        return RedirectToAction("Index", "Store"); 
-                    }
+                    return RedirectToAction("Index", "Store"); 
                 }
 
                 ViewBag.Error = "Credenziali errate";
@@ -109,31 +101,74 @@ namespace GestioneOrdini.Controllers
         }
 
         [HttpGet]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            
+            // Verifica se l'utente è autenticato
+            var userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login");
+            }
+
+            // Recupera il cliente dal database
+            var cliente = await _context.Clienti.FirstOrDefaultAsync(c => c.Email == userId);
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+
+            // Aggiorna l'ultimo accesso
+            cliente.UltimoAccesso = DateTime.Now;
+            await _context.SaveChangesAsync();
+
+            // Crea il modello per la vista
             var model = new ProfileViewModel
             {
-                Nome = "Mario",
-                Cognome = "Rossi",
-                Email = "mario.rossi@example.com",
-                Telefono = "3331234567",
-                Indirizzo = "Via Roma 123",
-                Citta = "Milano",
-                Provincia = "MI",
-                CAP = "20100",
-                DataRegistrazione = DateTime.Now.AddMonths(-6),
-                UltimoAccesso = DateTime.Now.AddHours(-2)
+                Nome = cliente.Nome,
+                Cognome = cliente.Cognome,
+                Email = cliente.Email,
+                Telefono = cliente.Telefono,
+                Indirizzo = cliente.Indirizzo,
+                Citta = cliente.Citta,
+                Provincia = cliente.Provincia,
+                CAP = cliente.CAP,
+                DataRegistrazione = cliente.DataRegistrazione,
+                UltimoAccesso = cliente.UltimoAccesso
             };
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Profile(ProfileViewModel model)
+        public async Task<IActionResult> Profile(ProfileViewModel model)
         {
             if (ModelState.IsValid)
             {
+                // Verifica se l'utente è autenticato
+                var userId = HttpContext.Session.GetString("UserId");
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return RedirectToAction("Login");
+                }
+
+                // Recupera il cliente dal database
+                var cliente = await _context.Clienti.FirstOrDefaultAsync(c => c.Email == userId);
+                if (cliente == null)
+                {
+                    return NotFound();
+                }
+
+                // Aggiorna i dati del cliente
+                cliente.Nome = model.Nome;
+                cliente.Cognome = model.Cognome;
+                cliente.Telefono = model.Telefono;
+                cliente.Indirizzo = model.Indirizzo;
+                cliente.Citta = model.Citta;
+                cliente.Provincia = model.Provincia;
+                cliente.CAP = model.CAP;
+
+                // Salva le modifiche
+                await _context.SaveChangesAsync();
                 
                 TempData["SuccessMessage"] = "Profilo aggiornato con successo!";
                 return RedirectToAction(nameof(Profile));
@@ -152,52 +187,27 @@ namespace GestioneOrdini.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(model);
+
+            if (await _credentialsStore.EmailExistsAsync(model.Email))
             {
-                try
-                {
-                    // Verifica se l'email è già registrata
-                    var emailEsistente = await _context.Clienti.AnyAsync(c => c.Email.ToLower() == model.Email.ToLower());
-                    if (emailEsistente)
-                    {
-                        ModelState.AddModelError("Email", "Questa email è già registrata.");
-                        return View(model);
-                    }
-
-                    // Crea un nuovo cliente
-                    var cliente = new Cliente
-                    {
-                        Nome = model.Nome,
-                        Cognome = model.Cognome,
-                        Email = model.Email,
-                        Telefono = model.Telefono,
-                        Indirizzo = model.Indirizzo
-                    };
-
-                    // Aggiungi il cliente al database
-                    _context.Clienti.Add(cliente);
-                    await _context.SaveChangesAsync();
-
-                    // Salva le credenziali
-                    var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password);
-                    CredentialsStore.Clienti[model.Email] = hashedPassword;
-
-                    // Imposta il ruolo e l'ID utente nella sessione
-                    HttpContext.Session.SetString("UserRole", "Customer");
-                    HttpContext.Session.SetString("UserId", model.Email);
-
-                    // Reindirizza alla pagina dello store
-                    return RedirectToAction("Index", "Store");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Errore durante la registrazione");
-                    ViewBag.Error = "Si è verificato un errore durante la registrazione. Riprova più tardi.";
-                    return View(model);
-                }
+                ModelState.AddModelError("Email", "Email già registrata");
+                return View(model);
             }
 
-            return View(model);
+            var cliente = new Cliente
+            {
+                Nome = model.Nome,
+                Cognome = model.Cognome,
+                Email = model.Email,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password),
+                DataRegistrazione = DateTime.Now
+            };
+
+            await _credentialsStore.AddClienteAsync(cliente);
+
+            return RedirectToAction("Login");
         }
     }
 } 

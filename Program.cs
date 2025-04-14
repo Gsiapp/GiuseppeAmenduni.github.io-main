@@ -27,15 +27,18 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Durata della sessione
     });
 
-    builder.Services.AddScoped<ICarrelloService, CarrelloService>();
 builder.Services.AddHttpContextAccessor();
+
+// Registrazione dei servizi
+builder.Services.AddScoped<ICarrelloService, CarrelloService>();
+builder.Services.AddScoped<ICredentialsStore, CredentialsStore>();
+
 // servizi di autorizzazione
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
     options.AddPolicy("Cliente", policy => policy.RequireRole("Cliente"));
 });
-builder.Services.AddScoped<CarrelloService>();
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews(options => 

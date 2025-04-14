@@ -55,24 +55,32 @@
 
                         <div class="mb-3">
                             <label asp-for="Indirizzo" class="form-label"></label>
-                            <input asp-for="Indirizzo" class="form-control" />
+                            <div class="input-group">
+                                <input asp-for="Indirizzo" class="form-control" id="address-input" />
+                                <button type="button" class="btn btn-outline-secondary" id="search-address">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            <div id="address-suggestions" class="list-group mt-2" style="display: none;"></div>
                             <span asp-validation-for="Indirizzo" class="text-danger"></span>
                         </div>
+
+                        <div id="map" style="height: 300px; margin-bottom: 20px;" class="rounded"></div>
 
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label asp-for="Citta" class="form-label"></label>
-                                <input asp-for="Citta" class="form-control" />
+                                <input asp-for="Citta" class="form-control" id="city-input" />
                                 <span asp-validation-for="Citta" class="text-danger"></span>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label asp-for="Provincia" class="form-label"></label>
-                                <input asp-for="Provincia" class="form-control" />
+                                <input asp-for="Provincia" class="form-control" id="province-input" />
                                 <span asp-validation-for="Provincia" class="text-danger"></span>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label asp-for="CAP" class="form-label"></label>
-                                <input asp-for="CAP" class="form-control" />
+                                <input asp-for="CAP" class="form-control" id="cap-input" />
                                 <span asp-validation-for="CAP" class="text-danger"></span>
                             </div>
                         </div>
@@ -142,4 +150,112 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <script>
+        let map;
+        let marker;
+        let searchTimeout;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inizializza la mappa
+            map = L.map('map').setView([41.9028, 12.4964], 6); // Centro su Italia
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            const addressInput = document.getElementById('address-input');
+            const searchButton = document.getElementById('search-address');
+            const suggestionsDiv = document.getElementById('address-suggestions');
+
+            // Funzione per cercare indirizzi
+            async function searchAddress(query) {
+                try {
+                    const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=it&limit=5`);
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error('Errore nella ricerca:', error);
+                    return [];
+                }
+            }
+
+            // Funzione per mostrare i suggerimenti
+            function showSuggestions(suggestions) {
+                suggestionsDiv.innerHTML = '';
+                suggestionsDiv.style.display = suggestions.length ? 'block' : 'none';
+
+                suggestions.forEach(suggestion => {
+                    const item = document.createElement('a');
+                    item.href = '#';
+                    item.className = 'list-group-item list-group-item-action';
+                    item.textContent = suggestion.display_name;
+                    
+                    item.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        selectAddress(suggestion);
+                    });
+
+                    suggestionsDiv.appendChild(item);
+                });
+            }
+
+            // Funzione per selezionare un indirizzo
+            function selectAddress(suggestion) {
+                addressInput.value = suggestion.display_name;
+                suggestionsDiv.style.display = 'none';
+
+                // Aggiorna la mappa
+                const lat = parseFloat(suggestion.lat);
+                const lon = parseFloat(suggestion.lon);
+                
+                if (marker) {
+                    map.removeLayer(marker);
+                }
+                
+                marker = L.marker([lat, lon]).addTo(map);
+                map.setView([lat, lon], 16);
+
+                // Estrai i dettagli dell'indirizzo
+                const address = suggestion.address;
+                document.getElementById('city-input').value = address.city || address.town || address.village || '';
+                document.getElementById('province-input').value = address.state || '';
+                document.getElementById('cap-input').value = address.postcode || '';
+            }
+
+            // Event listener per la ricerca
+            addressInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                const query = this.value.trim();
+                
+                if (query.length < 3) {
+                    suggestionsDiv.style.display = 'none';
+                    return;
+                }
+
+                searchTimeout = setTimeout(async () => {
+                    const suggestions = await searchAddress(query);
+                    showSuggestions(suggestions);
+                }, 500);
+            });
+
+            // Event listener per il pulsante di ricerca
+            searchButton.addEventListener('click', async function() {
+                const query = addressInput.value.trim();
+                if (query.length >= 3) {
+                    const suggestions = await searchAddress(query);
+                    showSuggestions(suggestions);
+                }
+            });
+
+            // Nascondi i suggerimenti quando si clicca fuori
+            document.addEventListener('click', function(e) {
+                if (!addressInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+                    suggestionsDiv.style.display = 'none';
+                }
+            });
+        });
+    </script>
 } 

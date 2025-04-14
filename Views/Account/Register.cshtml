@@ -78,6 +78,39 @@
                 <span asp-validation-for="Indirizzo" class="text-danger small"></span>
             </div>
 
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group mb-3">
+                        <label asp-for="Citta" class="form-label"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-city"></i></span>
+                            <input asp-for="Citta" class="form-control" placeholder="Città" />
+                        </div>
+                        <span asp-validation-for="Citta" class="text-danger small"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group mb-3">
+                        <label asp-for="Provincia" class="form-label"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                            <input asp-for="Provincia" class="form-control" placeholder="PR" maxlength="2" />
+                        </div>
+                        <span asp-validation-for="Provincia" class="text-danger small"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group mb-3">
+                        <label asp-for="CAP" class="form-label"></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-mail-bulk"></i></span>
+                            <input asp-for="CAP" class="form-control" placeholder="12345" maxlength="5" />
+                        </div>
+                        <span asp-validation-for="CAP" class="text-danger small"></span>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group mb-3">
                 <label asp-for="Password" class="form-label"></label>
                 <div class="input-group">

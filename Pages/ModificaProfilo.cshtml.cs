@@ -24,7 +24,10 @@ namespace GestioneOrdini.Pages
                 Cognome = string.Empty,
                 Email = string.Empty,
                 Telefono = string.Empty,
-                Indirizzo = string.Empty
+                Indirizzo = string.Empty,
+                Citta = string.Empty,
+                Provincia = string.Empty,
+                CAP = string.Empty
             };
         }
 

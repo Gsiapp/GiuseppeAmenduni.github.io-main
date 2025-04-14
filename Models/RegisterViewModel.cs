@@ -29,6 +29,21 @@ namespace GestioneOrdini.Models
         [Display(Name = "Indirizzo")]
         public string Indirizzo { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "La città è obbligatoria.")]
+        [StringLength(50, ErrorMessage = "La città non può superare i 50 caratteri.")]
+        [Display(Name = "Città")]
+        public string Citta { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La provincia è obbligatoria.")]
+        [StringLength(2, ErrorMessage = "La provincia deve essere di 2 caratteri.")]
+        [Display(Name = "Provincia")]
+        public string Provincia { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Il CAP è obbligatorio.")]
+        [StringLength(5, ErrorMessage = "Il CAP deve essere di 5 caratteri.")]
+        [Display(Name = "CAP")]
+        public string CAP { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "La password è obbligatoria.")]
         [StringLength(100, ErrorMessage = "La password deve essere di almeno {2} caratteri.", MinimumLength = 6)]
         [DataType(DataType.Password)]
